@@ -28,7 +28,7 @@ struct MainView: View {
         TabView(selection: $pageIndex) {
             ForEach(0..<pageIndex + 1, id: \.self) { index in
                 NodeView(
-                    nodes: viewModel.currentNodeObject.value.children,
+                    nodes: viewModel.currentNodeObject.value[index].children,
                     onTap: { page in
                         self.pageIndex += 1
                         self.isAnimate.toggle()
