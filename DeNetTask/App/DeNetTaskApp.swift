@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct DeNetTaskApp: App {
+    let viewModel = MainViewViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView(viewModel: viewModel)
         }
     }
 }
