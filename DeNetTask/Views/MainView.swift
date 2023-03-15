@@ -9,11 +9,10 @@ import SwiftUI
 
 struct MainView: View {
     @ObservedObject var viewModel: MainViewViewModel
-    @State var pageIndex = 1
-    private let appendButtonSize = CGSize(
-        width: UIScreen.main.bounds.width - 32,
-        height: 40
-    )
+    @State var pageIndex = 0
+    @State var isAnimate = false
+    private let appendButtonSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 40)
+    
     var body: some View {
         content
     }
@@ -26,17 +25,24 @@ struct MainView: View {
     }
     
     var tabView: some View {
-        TabView {
-            ForEach(0..<pageIndex, id: \.self) { _ in
-                VStack {
-                    NodeView(nodes: viewModel.root.children) { _ in
-                        pageIndex += 1
+        TabView(selection: $pageIndex) {
+            ForEach(0..<pageIndex + 1, id: \.self) { index in
+                NodeView(
+                    nodes: viewModel.currentNodeObject.value.children,
+                    onTap: { page in
+                        self.pageIndex += 1
+                        self.isAnimate.toggle()
+                        viewModel.path.value.append(page)
                     }
-                }
+                )
+                .tag(index)
             }
         }
         .tabViewStyle(.page)
-        .tag(pageIndex)
+    }
+    
+    var arrows: some View {
+        EmptyView()
     }
     
     var appendButton: some View {

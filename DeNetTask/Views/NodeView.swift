@@ -26,6 +26,7 @@ struct NodeView: View {
             ForEach(0..<nodes.count, id: \.self) { index in
                 NodeListView(text: nodes[index].name ?? "No name")
                     .onTapGesture {
+                        print("Tap index \(index)")
                         onTap(index)
                     }
             }
