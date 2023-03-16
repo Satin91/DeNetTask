@@ -22,7 +22,7 @@ struct MainView: View {
     private var content: some View {
         VStack {
             arrowBack
-            tabView
+            nodeView
             appendButton
         }
         .background {
@@ -30,11 +30,11 @@ struct MainView: View {
         }
     }
     
-    var tabView: some View {
+    var nodeView: some View {
         NodeView(
             nodes: nodes,
             onTap: { index in viewModel.follow(to: index) },
-            onDelete: { _ in }
+            onDelete: { index in viewModel.remove(by: index) }
         )
     }
     
@@ -65,6 +65,7 @@ struct MainView: View {
         .onTapGesture {
             viewModel.back()
         }
+        .opacity(viewModel.isHomeScreen ? 0 : 1)
     }
 }
 
