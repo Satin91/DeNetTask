@@ -10,6 +10,7 @@ import SwiftUI
 struct NodeView: View {
     var nodes: [Node]
     var onTap: (Int) -> Void
+    var onDelete: (Int) -> Void
     
     var body: some View {
         content
@@ -24,14 +25,11 @@ struct NodeView: View {
     var tableView: some View {
         List {
             ForEach(0..<nodes.count, id: \.self) { index in
-                NodeListView(text: nodes[index].name ?? "No name")
+                NodeListView(text: nodes[index].name ?? "No name", onDelete: { onDelete(index) })
                     .onTapGesture {
-                        print("Tap index \(index)")
                         onTap(index)
                     }
             }
-            .onDelete(perform: { _ in
-            })
             .listRowSeparator(.hidden)
         }.listStyle(.plain)
     }
@@ -41,17 +39,42 @@ struct NodeListView: View {
     var text: String
     let height: CGFloat = 40
     let cornerRadius: CGFloat = 14
+    let onDelete: () -> Void
     
     var body: some View {
+        content
+    }
+    
+    private var content: some View {
+        rectangle
+            .overlay {
+                HStack {
+                    Spacer()
+                    xMarkImage
+                        .padding(.trailing)
+                }
+            }
+    }
+    
+    private var xMarkImage: some View {
+        Image(systemName: "xmark")
+            .font(.body.weight(.light))
+            .foregroundColor(Color.black)
+            .onTapGesture {
+                onDelete()
+            }
+    }
+    
+    private var rectangle: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
-            .foregroundColor(.blue)
+            .foregroundColor(.gray)
             .shadow(color: .gray, radius: 6)
             .frame(height: height)
             .overlay {
                 HStack {
                     Text(text)
                         .font(.headline)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .frame(alignment: .leading)
                         .padding()
                     Spacer()

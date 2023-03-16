@@ -11,11 +11,7 @@ import Foundation
 class MainViewViewModel: ObservableObject {
     @Published var root = Node(parent: Node(parent: Node(parent: nil, children: []), children: []), children: [])
     
-    var currentNodeObject = CurrentValueSubject<[Node], Never>([Node(parent: Node(parent: nil, children: []), children: [])])
-    
-    var current: Node {
-        currentNode(for: path.value)
-    }
+    var nodeObjects = CurrentValueSubject<[Node], Never>([Node(parent: Node(parent: nil, children: []), children: [])])
     
     var cancelBag = Set<AnyCancellable>()
     var path = CurrentValueSubject<[Int], Never>([0])
@@ -25,14 +21,22 @@ class MainViewViewModel: ObservableObject {
     }
     
     func addChild(node: inout Node) {
-        let newNode = Node(name: "\(root.children.count)", parent: current.parent, children: [])
-        currentNode(for: path.value).children.append(newNode)
+        let currentNode = currentNode(for: path.value)
+        let newNode = Node(name: "\(root.children.count)", parent: currentNode.parent, children: [])
+        currentNode.children.append(newNode)
+    }
+    
+    func removeChild(index: Int) {
+        let currentNode = currentNode(for: path.value)
+        currentNode.children.remove(at: index)
+        self.nodeObjects.send(nodeObjects.value)
+        print("remove child")
     }
     
     func subscribe() {
         path.sink { [weak self] newPath in
             guard let self else { return }
-            self.currentNodeObject.send(self.getCurrentNodes(for: newPath))
+            self.nodeObjects.send(self.getCurrentNodes(for: newPath))
         }
         .store(in: &cancelBag)
     }
@@ -50,8 +54,8 @@ class MainViewViewModel: ObservableObject {
     func getCurrentNodes(for path: [Int]) -> [Node] {
         var nodes: [Node] = []
         var tmpRoot = root
-        for index in path {
-            if index == 0 {
+        for (order, index) in path.enumerated() {
+            if order == 0 {
                 nodes = [root]
             } else {
                 let iterationNode = tmpRoot.children[index]
@@ -64,14 +68,13 @@ class MainViewViewModel: ObservableObject {
     
     func currentNode(for path: [Int]) -> Node {
         var node = root
-        for index in path {
-            if index == 0 {
+        for (order, index) in path.enumerated() {
+            if order == 0 {
                 node = root
             } else {
                 node = node.children[index]
             }
         }
-        print(#function)
         return node
     }
 }
