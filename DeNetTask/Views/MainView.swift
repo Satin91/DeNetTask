@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct MainView: View {
-    @StateObject var viewModel: MainViewViewModel
-    @State var pageIndex = 0
-    @State var isAnimate = false
+    @ObservedObject var viewModel: MainViewViewModel
     private let appendButtonSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 60)
-    @State var pageChanged = false
+    @State var nodes = [Node]()
     
     var body: some View {
         content
+            .onReceive(viewModel.currentNode) { output in
+                self.nodes = output.children
+            }
     }
     
     private var content: some View {
@@ -24,39 +25,22 @@ struct MainView: View {
             tabView
             appendButton
         }
+        .background {
+            Color(Colors.background)
+        }
     }
     
     var tabView: some View {
-        TabView(selection: $pageIndex) {
-            ForEach(0..<pageIndex + 1, id: \.self) { index in
-                VStack {
-                    NodeView(
-                        nodes: viewModel.root.children,
-                        onTap: { page in
-                            self.pageIndex += 1
-                            self.isAnimate.toggle()
-                            viewModel.path.value.append(page)
-                        }, onDelete: { index in
-                            viewModel.removeChild(index: index)
-                        }
-                    )
-                    .contentShape(Rectangle())
-                    .gesture(DragGesture())
-                    .tag(index)
-                }
-            }
-        }
-        .tabViewStyle(.page)
-        .animation(.easeInOut(duration: 0.3), value: isAnimate)
-    }
-    
-    var arrows: some View {
-        EmptyView()
+        NodeView(
+            nodes: nodes,
+            onTap: { index in viewModel.follow(to: index) },
+            onDelete: { _ in }
+        )
     }
     
     var appendButton: some View {
         Button {
-            viewModel.addChild(node: &viewModel.root)
+            viewModel.saveNewNode()
         } label: {
             Text("Append")
                 .foregroundColor(.white)
@@ -75,13 +59,11 @@ struct MainView: View {
                 .font(.body.weight(.bold))
                 .foregroundColor(Color.red)
                 .frame(width: 20, height: 20, alignment: .leading)
-                .opacity(pageIndex == 0 ? 0 : 1)
             Spacer()
         }
         .padding()
         .onTapGesture {
-            pageIndex -= 1
-            viewModel.path.value.removeLast()
+            viewModel.back()
         }
     }
 }

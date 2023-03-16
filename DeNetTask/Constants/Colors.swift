@@ -8,5 +8,7 @@
 import Foundation
 
 enum Colors {
-    static var rowBackground = "rowBackground"
+    static var background = "background"
+    static var font = "font"
+    static var items = "items"
 }

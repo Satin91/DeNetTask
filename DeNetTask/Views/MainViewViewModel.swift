@@ -9,72 +9,71 @@ import Combine
 import Foundation
 
 class MainViewViewModel: ObservableObject {
-    @Published var root = Node(parent: Node(parent: Node(parent: nil, children: []), children: []), children: [])
+    // storage for the whole tree
+    private var root = Node(name: "Root", parent: nil, children: [])
+    // before the eyes
+    var currentNode = CurrentValueSubject<Node, Never>(Node(children: [Node(children: [])]))
     
-    var nodeObjects = CurrentValueSubject<[Node], Never>([Node(parent: Node(parent: nil, children: []), children: [])])
+    private var subscribe = Set<AnyCancellable>()
     
-    var cancelBag = Set<AnyCancellable>()
-    var path = CurrentValueSubject<[Int], Never>([0])
+    private var path = [0]
     
     init() {
-        subscribe()
     }
     
-    func addChild(node: inout Node) {
-        let currentNode = currentNode(for: path.value)
-        let newNode = Node(name: "\(root.children.count)", parent: currentNode.parent, children: [])
-        currentNode.children.append(newNode)
+    private func subscribes() {
     }
     
-    func removeChild(index: Int) {
-        let currentNode = currentNode(for: path.value)
-        currentNode.children.remove(at: index)
-        self.nodeObjects.send(nodeObjects.value)
-        print("remove child")
-    }
-    
-    func subscribe() {
-        path.sink { [weak self] newPath in
-            guard let self else { return }
-            self.nodeObjects.send(self.getCurrentNodes(for: newPath))
-        }
-        .store(in: &cancelBag)
-    }
-    
-    func saveToStorage() {
-        DispatchQueue.global(qos: .background).async {
-            // MARK: Save path
-            // MARK: Save root
-        }
-    }
-    
-    func saveNodeForPath() {
-    }
-    
-    func getCurrentNodes(for path: [Int]) -> [Node] {
-        var nodes: [Node] = []
-        var tmpRoot = root
-        for (order, index) in path.enumerated() {
-            if order == 0 {
-                nodes = [root]
+    func getCurrentNode() {
+        var temporary: Node = root
+        path.forEach { index in
+            if temporary.children.indices.contains(index) {
+                temporary = temporary.children[index]
             } else {
-                let iterationNode = tmpRoot.children[index]
-                nodes.append(iterationNode)
-                tmpRoot = iterationNode
+                fatalError("Node not found")
             }
         }
-        return nodes
+        currentNode.send(temporary)
     }
     
-    func currentNode(for path: [Int]) -> Node {
-        var node = root
-        for (order, index) in path.enumerated() {
-            if order == 0 {
-                node = root
-            } else {
-                node = node.children[index]
+    func follow(to: Int) {
+        if currentNode.value.children.indices.contains(to) {
+            currentNode.send(currentNode.value.children[to])
+        } else {
+            fatalError("Node not found")
+        }
+    }
+    
+    func back() {
+        if let parent = currentNode.value.parent {
+            currentNode.send(parent)
+        } else {
+            fatalError("Parent not found")
+        }
+    }
+    
+    // MARK: - Storage
+    func saveNewNode() {
+        var temporary = root
+        print(root.children.count)
+        for index in path {
+            if let node = temporary.children[index] {
+                temporary = node
             }
         }
-        return node
+        print(currentNode.value.children)
+        currentNode.send(temporary)
     }
 }
+// Root
+// Current
+// Back
+// Follow
+
+// Methods:
+// Add
+// Delete
+
+// Storage:
+// Load
+// Save

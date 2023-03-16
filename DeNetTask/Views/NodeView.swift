@@ -29,6 +29,7 @@ struct NodeView: View {
                     .onTapGesture {
                         onTap(index)
                     }
+                    .listRowBackground(Color(Colors.background))
             }
             .listRowSeparator(.hidden)
         }.listStyle(.plain)
@@ -59,7 +60,7 @@ struct NodeListView: View {
     private var xMarkImage: some View {
         Image(systemName: "xmark")
             .font(.body.weight(.light))
-            .foregroundColor(Color.black)
+            .foregroundColor(Color(Colors.font))
             .onTapGesture {
                 onDelete()
             }
@@ -67,8 +68,7 @@ struct NodeListView: View {
     
     private var rectangle: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
-            .foregroundColor(.gray)
-            .shadow(color: .gray, radius: 6)
+            .foregroundColor(Color(Colors.items))
             .frame(height: height)
             .overlay {
                 HStack {
