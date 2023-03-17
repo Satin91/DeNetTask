@@ -10,13 +10,13 @@ import Foundation
 
 final class MainViewViewModel: ObservableObject {
     // storage for the whole tree
-    private var root = Node(name: "Root", parent: nil, children: [])
+    var root = Node(parent: nil, name: "Root", children: [])
     // before the eyes
     var currentNode = CurrentValueSubject<Node, Never>(Node(children: []))
     
     private var cancelBag = Set<AnyCancellable>()
     
-    @Published var path = [Int]()
+    var path = [Int]()
     
     var isHomeScreen: Bool {
         path.isEmpty
@@ -58,7 +58,6 @@ final class MainViewViewModel: ObservableObject {
     }
     
     func back() {
-        decoding()
         path.removeLast()
         if let parent = currentNode.value.parent {
             currentNode.send(parent)
@@ -67,26 +66,14 @@ final class MainViewViewModel: ObservableObject {
         }
     }
     
-    func decoding() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                let coder = JSONEncoder()
-                let decode = try coder.encode(self.root)
-                print(decode)
-            } catch {
-                print("Error decode")
-            }
-        }
-    }
-    
-    // MARK: - Storage
+    // MARK: - 'Storage'
     func addNode() {
         if path.isEmpty {
-            let newNode = Node(name: "root", parent: root, children: [] )
+            let newNode = Node(parent: root, name: "root", children: [])
             root.children.append(newNode)
             currentNode.send(root)
         } else {
-            let newNode = Node(name: "no root", parent: currentNode.value, children: [] )
+            let newNode = Node(parent: currentNode.value, name: "not root", children: [] )
             let node = findNodeByPath()
             node.children.append(newNode)
             currentNode.send(node)
@@ -101,18 +88,6 @@ final class MainViewViewModel: ObservableObject {
         }
     }
 }
-// Root
-// Current
-// Back
-// Follow
-
-// Methods:
-// Add
-// Delete
-
-// Storage:
-// Load
-// Save
 
 extension MainViewViewModel {
     private func findNodeByPath() -> Node {
@@ -123,11 +98,4 @@ extension MainViewViewModel {
         }
         return temporary
     }
-    
-    //    private func findNodeByIndex(node: Node, index: Int) -> Node? {
-    //        if node.children.indices.contains(index) {
-    //            return node.children[index]
-    //        }
-    //        return nil
-    //    }
 }

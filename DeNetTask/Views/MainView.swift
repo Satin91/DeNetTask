@@ -15,23 +15,23 @@ struct MainView: View {
     
     var body: some View {
         content
-            .onReceive(viewModel.currentNode) { output in
-                self.nodes = output.children
+            .onReceive(viewModel.currentNode) { Node in
+                nodes = Node.children
                 isAnimate.toggle()
             }
     }
     
     private var content: some View {
         VStack {
-            arrowBack
-            nodeView
+            backButton
+            rowsView
             appendButton
         }
         .background(Color(Colors.background))
     }
     
-    var nodeView: some View {
-        NodeView(
+    var rowsView: some View {
+        RowsView(
             nodes: nodes,
             onTap: { index in viewModel.follow(to: index) },
             onDelete: { index in viewModel.remove(by: index) }
@@ -54,7 +54,7 @@ struct MainView: View {
         }
     }
     
-    var arrowBack: some View {
+    var backButton: some View {
         HStack {
             Image(systemName: "arrow.backward")
                 .font(.body.weight(.bold))

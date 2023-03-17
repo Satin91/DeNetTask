@@ -11,7 +11,7 @@
 		8E10443F29C0560700B288A6 /* DeNetTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E10443E29C0560700B288A6 /* DeNetTaskApp.swift */; };
 		8E10444329C0560800B288A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E10444229C0560800B288A6 /* Assets.xcassets */; };
 		8E10444629C0560800B288A6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E10444529C0560800B288A6 /* Preview Assets.xcassets */; };
-		8E10445029C05B3100B288A6 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E10444F29C05B3100B288A6 /* NodeView.swift */; };
+		8E10445029C05B3100B288A6 /* RowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E10444F29C05B3100B288A6 /* RowsView.swift */; };
 		8E10445329C05BE300B288A6 /* MainViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E10445229C05BE300B288A6 /* MainViewViewModel.swift */; };
 		8E10445529C065DE00B288A6 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E10445429C065DE00B288A6 /* Node.swift */; };
 		8E286C0D29C1AD4D002A541A /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E286C0C29C1AD4D002A541A /* MainView.swift */; };
@@ -28,7 +28,7 @@
 		8E10443E29C0560700B288A6 /* DeNetTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeNetTaskApp.swift; sourceTree = "<group>"; };
 		8E10444229C0560800B288A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E10444529C0560800B288A6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		8E10444F29C05B3100B288A6 /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
+		8E10444F29C05B3100B288A6 /* RowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowsView.swift; sourceTree = "<group>"; };
 		8E10445229C05BE300B288A6 /* MainViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewViewModel.swift; sourceTree = "<group>"; };
 		8E10445429C065DE00B288A6 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		8E286C0C29C1AD4D002A541A /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 			children = (
 				8E286C0C29C1AD4D002A541A /* MainView.swift */,
 				8E10445229C05BE300B288A6 /* MainViewViewModel.swift */,
-				8E10444F29C05B3100B288A6 /* NodeView.swift */,
+				8E10444F29C05B3100B288A6 /* RowsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -259,7 +259,7 @@
 				8E10443F29C0560700B288A6 /* DeNetTaskApp.swift in Sources */,
 				8E7F1AC929C30C26005F252C /* Size.swift in Sources */,
 				8E286C0F29C1C63E002A541A /* Colors.swift in Sources */,
-				8E10445029C05B3100B288A6 /* NodeView.swift in Sources */,
+				8E10445029C05B3100B288A6 /* RowsView.swift in Sources */,
 				8E286C0D29C1AD4D002A541A /* MainView.swift in Sources */,
 				8E10445329C05BE300B288A6 /* MainViewViewModel.swift in Sources */,
 				8E10445529C065DE00B288A6 /* Node.swift in Sources */,

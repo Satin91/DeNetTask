@@ -1,5 +1,5 @@
 //
-//  NodeView.swift
+//  RowsView.swift
 //  DeNetTask
 //
 //  Created by Артур Кулик on 14.03.2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NodeView: View {
+struct RowsView: View {
     var nodes: [Node]
     var onTap: (Int) -> Void
     var onDelete: (Int) -> Void
@@ -17,10 +17,10 @@ struct NodeView: View {
     }
     
     var content: some View {
-        tableView
+        list
     }
     
-    var tableView: some View {
+    var list: some View {
         List {
             ForEach(0..<nodes.count, id: \.self) { index in
                 NodeListView(text: nodes[index].name ?? "No name", onDelete: { onDelete(index) })
@@ -47,13 +47,13 @@ struct NodeListView: View {
             .overlay {
                 HStack {
                     Spacer()
-                    xMarkImage
+                    deleteButton
                         .padding(.trailing)
                 }
             }
     }
     
-    private var xMarkImage: some View {
+    private var deleteButton: some View {
         Image(systemName: "xmark")
             .font(.body.weight(.medium))
             .foregroundColor(Color(Colors.accentColor))

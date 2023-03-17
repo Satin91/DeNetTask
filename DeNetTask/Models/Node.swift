@@ -7,12 +7,12 @@
 
 import Foundation
 
-class Node: Codable {
-    var name: String?
+class Node: Decodable {
     var parent: Node?
     var children: [Node]
-    
-    required init(name: String? = nil, parent: Node? = nil, children: [Node]) {
+    var name: String?
+
+    init(parent: Node? = nil, name: String? = nil, children: [Node]) {
         self.parent = parent
         self.children = children
         self.name = name
