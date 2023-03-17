@@ -8,15 +8,15 @@
 import Combine
 import Foundation
 
-class MainViewViewModel: ObservableObject {
+final class MainViewViewModel: ObservableObject {
     // storage for the whole tree
     private var root = Node(name: "Root", parent: nil, children: [])
     // before the eyes
     var currentNode = CurrentValueSubject<Node, Never>(Node(children: []))
     
-    private var subscribe = Set<AnyCancellable>()
+    private var cancelBag = Set<AnyCancellable>()
     
-    private var path = [Int]()
+    @Published var path = [Int]()
     
     var isHomeScreen: Bool {
         path.isEmpty
@@ -26,6 +26,10 @@ class MainViewViewModel: ObservableObject {
     }
     
     private func subscribes() {
+        currentNode.sink { _ in
+            print("path \(self.path)")
+        }
+        .store(in: &cancelBag)
     }
     
     func getCurrentNode() {
@@ -53,30 +57,30 @@ class MainViewViewModel: ObservableObject {
     }
     
     func back() {
+        path.removeLast()
         if let parent = currentNode.value.parent {
             currentNode.send(parent)
-            path.removeLast()
         } else {
             currentNode.send(root)
         }
     }
     
     // MARK: - Storage
-    func saveNewNode() {
+    func addNode() {
         if path.isEmpty {
             let newNode = Node(name: "root", parent: root, children: [] )
             root.children.append(newNode)
             currentNode.send(root)
         } else {
-            let newNode = Node(name: "no root", parent: currentNode.value.parent, children: [] )
-            let node = findTheNode()
+            let newNode = Node(name: "no root", parent: currentNode.value, children: [] )
+            let node = findNodeByPath()
             node.children.append(newNode)
             currentNode.send(node)
         }
     }
     
     func remove(by: Int) {
-        let node = findTheNode()
+        let node = findNodeByPath()
         if node.children.indices.contains(by) {
             node.children.remove(at: by)
             currentNode.send(node)
@@ -97,7 +101,7 @@ class MainViewViewModel: ObservableObject {
 // Save
 
 extension MainViewViewModel {
-    private func findTheNode() -> Node {
+    private func findNodeByPath() -> Node {
         var temporary = root
         for index in path where temporary.children.indices.contains(index) {
             let node = temporary.children[index]
@@ -105,4 +109,11 @@ extension MainViewViewModel {
         }
         return temporary
     }
+    
+    //    private func findNodeByIndex(node: Node, index: Int) -> Node? {
+    //        if node.children.indices.contains(index) {
+    //            return node.children[index]
+    //        }
+    //        return nil
+    //    }
 }

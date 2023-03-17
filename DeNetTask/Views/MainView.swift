@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var viewModel: MainViewViewModel
+    @StateObject var viewModel: MainViewViewModel
     private let appendButtonSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 60)
     @State var nodes = [Node]()
+    @State var isAnimate = false
     
     var body: some View {
         content
             .onReceive(viewModel.currentNode) { output in
                 self.nodes = output.children
+                isAnimate.toggle()
             }
     }
     
@@ -25,9 +27,7 @@ struct MainView: View {
             nodeView
             appendButton
         }
-        .background {
-            Color(Colors.background)
-        }
+        .background(Color(Colors.background))
     }
     
     var nodeView: some View {
@@ -36,11 +36,12 @@ struct MainView: View {
             onTap: { index in viewModel.follow(to: index) },
             onDelete: { index in viewModel.remove(by: index) }
         )
+        .animation(.easeIn(duration: 0.3), value: isAnimate)
     }
     
     var appendButton: some View {
         Button {
-            viewModel.saveNewNode()
+            viewModel.addNode()
         } label: {
             Text("Append")
                 .foregroundColor(.white)

@@ -17,9 +17,7 @@ struct NodeView: View {
     }
     
     var content: some View {
-        VStack {
-            tableView
-        }
+        tableView
     }
     
     var tableView: some View {
@@ -29,16 +27,16 @@ struct NodeView: View {
                     .onTapGesture {
                         onTap(index)
                     }
-                    .listRowBackground(Color(Colors.background))
             }
             .listRowSeparator(.hidden)
-        }.listStyle(.plain)
+        }
+        .listStyle(.plain)
     }
 }
 
 struct NodeListView: View {
     var text: String
-    let height: CGFloat = 40
+    let height: CGFloat = 60
     let cornerRadius: CGFloat = 14
     let onDelete: () -> Void
     
@@ -59,8 +57,8 @@ struct NodeListView: View {
     
     private var xMarkImage: some View {
         Image(systemName: "xmark")
-            .font(.body.weight(.light))
-            .foregroundColor(Color(Colors.font))
+            .font(.body.weight(.medium))
+            .foregroundColor(Color(Colors.accentColor))
             .onTapGesture {
                 onDelete()
             }
@@ -68,7 +66,7 @@ struct NodeListView: View {
     
     private var rectangle: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
-            .foregroundColor(Color(Colors.items))
+            .foregroundColor(Color(Colors.rowBackground))
             .frame(height: height)
             .overlay {
                 HStack {

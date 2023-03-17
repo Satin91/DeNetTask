@@ -8,7 +8,6 @@
 import Foundation
 
 class Node {
-    var id = UUID()
     var name: String?
     var parent: Node?
     var children: [Node]
