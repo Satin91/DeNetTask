@@ -46,7 +46,7 @@ struct MainView: View {
             Text("Append")
                 .foregroundColor(.white)
                 .background(
-                    Color.red
+                    Color(Colors.accentColor)
                         .frame(width: appendButtonSize.width, height: appendButtonSize.height)
                 )
                 .frame(width: appendButtonSize.width, height: appendButtonSize.height)
@@ -58,7 +58,7 @@ struct MainView: View {
         HStack {
             Image(systemName: "arrow.backward")
                 .font(.body.weight(.bold))
-                .foregroundColor(Color.red)
+                .foregroundColor(Color(Colors.accentColor))
                 .frame(width: 20, height: 20, alignment: .leading)
             Spacer()
         }
