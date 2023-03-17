@@ -36,8 +36,6 @@ struct NodeView: View {
 
 struct NodeListView: View {
     var text: String
-    let height: CGFloat = 60
-    let cornerRadius: CGFloat = 14
     let onDelete: () -> Void
     
     var body: some View {
@@ -65,9 +63,9 @@ struct NodeListView: View {
     }
     
     private var rectangle: some View {
-        RoundedRectangle(cornerRadius: cornerRadius)
+        RoundedRectangle(cornerRadius: 14)
             .foregroundColor(Color(Colors.rowBackground))
-            .frame(height: height)
+            .frame(height: 60)
             .overlay {
                 HStack {
                     Text(text)

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MainView: View {
-    @StateObject var viewModel: MainViewViewModel
     private let appendButtonSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 60)
+    @StateObject var viewModel: MainViewViewModel
     @State var nodes = [Node]()
     @State var isAnimate = false
     

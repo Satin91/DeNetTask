@@ -23,6 +23,7 @@ final class MainViewViewModel: ObservableObject {
     }
     
     init() {
+        subscribes()
     }
     
     private func subscribes() {
@@ -57,11 +58,24 @@ final class MainViewViewModel: ObservableObject {
     }
     
     func back() {
+        decoding()
         path.removeLast()
         if let parent = currentNode.value.parent {
             currentNode.send(parent)
         } else {
             currentNode.send(root)
+        }
+    }
+    
+    func decoding() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                let coder = JSONEncoder()
+                let decode = try coder.encode(self.root)
+                print(decode)
+            } catch {
+                print("Error decode")
+            }
         }
     }
     
