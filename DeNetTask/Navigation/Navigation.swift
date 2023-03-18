@@ -9,6 +9,8 @@ import Combine
 import Foundation
 import RealmSwift
 
+typealias Path = [Int]
+
 class Navigation: ObservableObject {
     // Properties
     var currentFolder = CurrentValueSubject<NodeRealm, Never>(NodeRealm())

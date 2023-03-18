@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct DeNetTaskApp: App {
-    let viewModel = MainViewViewModel()
     let navigator = Navigation()
     
     var body: some Scene {

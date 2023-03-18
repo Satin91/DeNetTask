@@ -19,10 +19,6 @@ struct ExplorerView: View {
             .onReceive(navigator.currentFolder) { node in
                 nodes = Array(node.children)
             }
-        //            .onReceive(viewModel.currentNode) { Node in
-        //                nodes = Node.children
-        //                isAnimate.toggle()
-        //            }
     }
     
     private var content: some View {
