@@ -1,5 +1,5 @@
 //
-//  MainView.swift
+//  ExplorerView.swift
 //  DeNetTask
 //
 //  Created by Артур Кулик on 15.03.2023.
@@ -7,18 +7,22 @@
 
 import SwiftUI
 
-struct MainView: View {
+struct ExplorerView: View {
     private let appendButtonSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 60)
+    @EnvironmentObject var navigator: Navigation
     @StateObject var viewModel: MainViewViewModel
-    @State var nodes = [Node]()
+    @State var nodes = [NodeRealm]()
     @State var isAnimate = false
     
     var body: some View {
         content
-            .onReceive(viewModel.currentNode) { Node in
-                nodes = Node.children
-                isAnimate.toggle()
+            .onReceive(navigator.currentFolder) { node in
+                nodes = Array(node.children)
             }
+        //            .onReceive(viewModel.currentNode) { Node in
+        //                nodes = Node.children
+        //                isAnimate.toggle()
+        //            }
     }
     
     private var content: some View {
@@ -31,17 +35,17 @@ struct MainView: View {
     }
     
     var rowsView: some View {
-        RowsView(
+        FoldersView(
             nodes: nodes,
             onTap: { index in viewModel.follow(to: index) },
-            onDelete: { index in viewModel.remove(by: index) }
+            onDelete: { index in navigator.removeFolder(at: index) }
         )
         .animation(.easeIn(duration: 0.3), value: isAnimate)
     }
     
     var appendButton: some View {
         Button {
-            viewModel.addNode()
+            navigator.addFolder()
         } label: {
             Text("Append")
                 .foregroundColor(.white)
@@ -67,11 +71,5 @@ struct MainView: View {
             viewModel.back()
         }
         .opacity(viewModel.isHomeScreen ? 0 : 1)
-    }
-}
-
-struct ViewWrapper_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView(viewModel: MainViewViewModel())
     }
 }

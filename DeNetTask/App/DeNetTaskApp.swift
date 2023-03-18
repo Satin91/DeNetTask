@@ -10,10 +10,12 @@ import SwiftUI
 @main
 struct DeNetTaskApp: App {
     let viewModel = MainViewViewModel()
+    let navigator = Navigation()
     
     var body: some Scene {
         WindowGroup {
-            MainView(viewModel: viewModel)
+            ExplorerView(viewModel: viewModel)
+                .environmentObject(navigator)
         }
     }
 }

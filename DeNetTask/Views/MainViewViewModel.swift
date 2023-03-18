@@ -8,15 +8,19 @@
 import Combine
 import Foundation
 
+typealias Path = [Int]
+
 final class MainViewViewModel: ObservableObject {
     // storage for the whole tree
     var root = Node(parent: nil, name: "Root", children: [])
-    // before the eyes
+    let storageManager = StorageManager()
+    @Published var node = NodeRealm()
+    
     var currentNode = CurrentValueSubject<Node, Never>(Node(children: []))
     
     private var cancelBag = Set<AnyCancellable>()
     
-    var path = [Int]()
+    var path = Path()
     
     var isHomeScreen: Bool {
         path.isEmpty
@@ -27,8 +31,8 @@ final class MainViewViewModel: ObservableObject {
     }
     
     private func subscribes() {
-        currentNode.sink { _ in
-            print("path \(self.path)")
+        storageManager.storagePublisher.sink { node in
+            self.node = node
         }
         .store(in: &cancelBag)
     }
@@ -68,16 +72,16 @@ final class MainViewViewModel: ObservableObject {
     
     // MARK: - 'Storage'
     func addNode() {
-        if path.isEmpty {
-            let newNode = Node(parent: root, name: "root", children: [])
-            root.children.append(newNode)
-            currentNode.send(root)
-        } else {
-            let newNode = Node(parent: currentNode.value, name: "not root", children: [] )
-            let node = findNodeByPath()
-            node.children.append(newNode)
-            currentNode.send(node)
-        }
+        //                if path.isEmpty {
+        //                    let newNode = Node(parent: root, name: "root", children: [])
+        //                    root.children.append(newNode)
+        //                    currentNode.send(root)
+        //                } else {
+        //                    let newNode = Node(parent: currentNode.value, name: "not root", children: [] )
+        //                    let node = findNodeByPath()
+        //                    node.children.append(newNode)
+        //                    currentNode.send(node)
+        //                }
     }
     
     func remove(by: Int) {

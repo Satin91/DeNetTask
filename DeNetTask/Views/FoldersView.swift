@@ -1,14 +1,15 @@
 //
-//  RowsView.swift
+//  FoldersView.swift
 //  DeNetTask
 //
 //  Created by Артур Кулик on 14.03.2023.
 //
 
+import RealmSwift
 import SwiftUI
 
-struct RowsView: View {
-    var nodes: [Node]
+struct FoldersView: View {
+    var nodes: [NodeRealm]
     var onTap: (Int) -> Void
     var onDelete: (Int) -> Void
     
@@ -23,7 +24,7 @@ struct RowsView: View {
     var list: some View {
         List {
             ForEach(0..<nodes.count, id: \.self) { index in
-                NodeListView(text: nodes[index].name ?? "No name", onDelete: { onDelete(index) })
+                NodeListView(text: Array(nodes)[index].name, onDelete: { onDelete(index) })
                     .onTapGesture {
                         onTap(index)
                     }
