@@ -14,7 +14,7 @@ struct DeNetTaskApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ExplorerView(viewModel: viewModel)
+            ExplorerView()
                 .environmentObject(navigator)
         }
     }

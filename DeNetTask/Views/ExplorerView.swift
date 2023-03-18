@@ -10,8 +10,8 @@ import SwiftUI
 struct ExplorerView: View {
     private let appendButtonSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 60)
     @EnvironmentObject var navigator: Navigation
-    @StateObject var viewModel: MainViewViewModel
     @State var nodes = [NodeRealm]()
+    @State var address = ""
     @State var isAnimate = false
     
     var body: some View {
@@ -27,6 +27,7 @@ struct ExplorerView: View {
     
     private var content: some View {
         VStack {
+            addressBar
             backButton
             rowsView
             appendButton
@@ -34,10 +35,21 @@ struct ExplorerView: View {
         .background(Color(Colors.background))
     }
     
+    var addressBar: some View {
+        Text(navigator.address)
+            .foregroundColor(Color(Colors.accentColor))
+            .padding(8)
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(8)
+            .padding()
+            .frame(width: Size.screenSize)
+            .background(Color.black)
+    }
+    
     var rowsView: some View {
         FoldersView(
             nodes: nodes,
-            onTap: { index in viewModel.follow(to: index) },
+            onTap: { index in navigator.openFolder(at: index) },
             onDelete: { index in navigator.removeFolder(at: index) }
         )
         .animation(.easeIn(duration: 0.3), value: isAnimate)
@@ -47,15 +59,13 @@ struct ExplorerView: View {
         Button {
             navigator.addFolder()
         } label: {
-            Text("Append")
-                .foregroundColor(.white)
-                .background(
-                    Color(Colors.accentColor)
-                        .frame(width: appendButtonSize.width, height: appendButtonSize.height)
-                )
-                .frame(width: appendButtonSize.width, height: appendButtonSize.height)
-                .cornerRadius(16)
+            Text("New Folder")
+                .foregroundColor(Color(Colors.accentColor))
         }
+        .frame(width: Size.screenSize)
+        .padding(.top)
+        .padding()
+        .background(Color.black)
     }
     
     var backButton: some View {
@@ -68,8 +78,8 @@ struct ExplorerView: View {
         }
         .padding()
         .onTapGesture {
-            viewModel.back()
+            navigator.back()
         }
-        .opacity(viewModel.isHomeScreen ? 0 : 1)
+        .opacity(navigator.isRootScreen ? 0 : 1)
     }
 }

@@ -28,6 +28,7 @@ struct FoldersView: View {
                     .onTapGesture {
                         onTap(index)
                     }
+                    .listRowBackground(Color(Colors.background))
             }
             .listRowSeparator(.hidden)
         }
@@ -64,14 +65,14 @@ struct NodeListView: View {
     }
     
     private var rectangle: some View {
-        RoundedRectangle(cornerRadius: 14)
+        RoundedRectangle(cornerRadius: 8)
             .foregroundColor(Color(Colors.rowBackground))
             .frame(height: 60)
             .overlay {
                 HStack {
                     Text(text)
                         .font(.headline)
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .frame(alignment: .leading)
                         .padding()
                     Spacer()

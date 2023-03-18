@@ -20,13 +20,15 @@ final class StorageManager {
         createStorageIfNeed()
     }
     
-    func addNode() {
+    func addNode(at path: Path) {
+        let currentNode = findNodeBy(path: path)
         realmTransactor {
-            let nodeRealm = NodeRealm(children: List<NodeRealm>(), name: "Name1")
-            storagePublisher.value.children.append(nodeRealm)
+            let nodeRealm = NodeRealm(parent: currentNode, children: List<NodeRealm>(), name: "")
+            let name = "\(nodeRealm.hashValue)".suffix(5)
+            nodeRealm.name = String(name)
+            currentNode.children.append(nodeRealm)
         }
-        refresh()
-        print("Storage childrens \(Array(storagePublisher.value.children).map({ $0.name }))")
+        storagePublisher.send(currentNode)
     }
     
     func removeNode(at path: Path, with index: Int) {
@@ -34,14 +36,15 @@ final class StorageManager {
         if node.children.indices.contains(index) {
             realmTransactor {
                 node.children.remove(at: index)
-                refresh()
+                refreshPublisher()
             }
         }
     }
     
     private func createStorageIfNeed() {
         if realmObjects.isEmpty {
-            $realmObjects.append(NodeRealm())
+            let rootFolder = NodeRealm(children: RealmSwift.List<NodeRealm>(), name: "Explorer")
+            $realmObjects.append(rootFolder)
         } else {
             guard let storage = realmObjects.first else {
                 fatalError("Storage not found")
@@ -72,7 +75,7 @@ extension StorageManager {
         return temporary
     }
     
-    private func refresh() {
+    private func refreshPublisher() {
         storagePublisher.send(storagePublisher.value)
     }
 }

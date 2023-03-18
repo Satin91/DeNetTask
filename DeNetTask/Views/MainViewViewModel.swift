@@ -7,27 +7,23 @@
 
 import Combine
 import Foundation
+import RealmSwift
 
 typealias Path = [Int]
 
-final class MainViewViewModel: ObservableObject {
+final class MainViewViewModel {
     // storage for the whole tree
     var root = Node(parent: nil, name: "Root", children: [])
     let storageManager = StorageManager()
     @Published var node = NodeRealm()
-    
     var currentNode = CurrentValueSubject<Node, Never>(Node(children: []))
-    
+
     private var cancelBag = Set<AnyCancellable>()
     
     var path = Path()
     
     var isHomeScreen: Bool {
         path.isEmpty
-    }
-    
-    init() {
-        subscribes()
     }
     
     private func subscribes() {
