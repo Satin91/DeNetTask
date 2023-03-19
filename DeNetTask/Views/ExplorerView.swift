@@ -22,60 +22,56 @@ struct ExplorerView: View {
     }
     
     private var content: some View {
-        VStack {
-            addressBar
-            backButton
-            rowsView
-            appendButton
+        VStack(spacing: 26) {
+            navigationBar
+            foldersView
         }
         .background(Color(Colors.background))
     }
     
-    var addressBar: some View {
-        Text(navigator.address)
-            .foregroundColor(Color(Colors.accentColor))
-            .padding(8)
-            .background(Color.gray.opacity(0.1))
-            .cornerRadius(8)
-            .padding()
-            .frame(width: Size.screenSize)
-            .background(Color.black)
+    var navigationBar: some View {
+        HStack {
+            backButton
+            addressBar
+            addButton
+        }
+        .frame(width: Sizes.screenWidth)
     }
     
-    var rowsView: some View {
+    var addButton: some View {
+        NavBarButton(type: .add) {
+            navigator.addFolder()
+        }
+    }
+    
+    var backButton: some View {
+        HStack {
+            NavBarButton(type: .back) {
+                navigator.back()
+            }
+        }
+        .opacity(navigator.isRootScreen ? 0 : 1)
+    }
+    
+    var addressBar: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .foregroundColor(Color.gray.opacity(0.1))
+            .frame(height: 40)
+            .frame(maxWidth: .infinity)
+            .overlay {
+                Text(navigator.address)
+                    .foregroundColor(Color(Colors.accentColor))
+                    .padding(8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+    }
+    
+    var foldersView: some View {
         FoldersView(
             nodes: nodes,
             onTap: { index in navigator.openFolder(at: index) },
             onDelete: { index in navigator.removeFolder(at: index) }
         )
         .animation(.easeIn(duration: 0.3), value: isAnimate)
-    }
-    
-    var appendButton: some View {
-        Button {
-            navigator.addFolder()
-        } label: {
-            Text("New Folder")
-                .foregroundColor(Color(Colors.accentColor))
-        }
-        .frame(width: Size.screenSize)
-        .padding(.top)
-        .padding()
-        .background(Color.black)
-    }
-    
-    var backButton: some View {
-        HStack {
-            Image(systemName: "arrow.backward")
-                .font(.body.weight(.bold))
-                .foregroundColor(Color(Colors.accentColor))
-                .frame(width: 20, height: 20, alignment: .leading)
-            Spacer()
-        }
-        .padding()
-        .onTapGesture {
-            navigator.back()
-        }
-        .opacity(navigator.isRootScreen ? 0 : 1)
     }
 }

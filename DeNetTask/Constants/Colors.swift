@@ -8,9 +8,13 @@
 import Foundation
 
 enum Colors {
-    static var background = "background"
-    static var font = "font"
-    static var items = "items"
-    static var accentColor = "accentColor"
-    static var rowBackground = "rowBackground"
+    static let background = "background"
+    static let font = "font"
+    static let items = "items"
+    static let accentColor = "accentColor"
+    static let rowBackground = "rowBackground"
+}
+
+enum Images {
+    static let folder = "folder"
 }

@@ -17,7 +17,7 @@ class Navigation: ObservableObject {
     private let storage = StorageManager()
     private var cancelBag = Set<AnyCancellable>()
     
-    private var path = Path()
+    private var path: Path = []
     
     var isRootScreen: Bool {
         path.isEmpty
@@ -38,13 +38,12 @@ class Navigation: ObservableObject {
         .store(in: &cancelBag)
     }
     
-    // MARK: Storage
     func addFolder() {
-        storage.addNode(at: path)
+        storage.addNode(to: currentFolder.value)
     }
     
     func removeFolder(at index: Int) {
-        storage.removeNode(at: path, with: index)
+        storage.removeNode(from: currentFolder.value, at: index)
     }
     
     func openFolder(at: Int) {
@@ -65,13 +64,13 @@ class Navigation: ObservableObject {
     }
     
     private func getAddress() -> String {
-        var temporary = currentFolder.value
+        var temporary: NodeRealm? = currentFolder.value
         var address: [String] = []
         path.forEach { _ in
-            address.append(temporary.parent?.name ?? "")
-            temporary = temporary.parent!
+            address.append(temporary?.name ?? "Root")
+            temporary = temporary?.parent
         }
-        let oneLine = address.reversed().joined(separator: "/")
-        return oneLine
+        let joinedLine = address.reversed().joined(separator: "/")
+        return joinedLine
     }
 }

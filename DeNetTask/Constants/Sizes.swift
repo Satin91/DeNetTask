@@ -7,6 +7,6 @@
 
 import UIKit
 
-enum Size {
-    static let screenSize = UIScreen.main.bounds.width
+enum Sizes {
+    static let screenWidth = UIScreen.main.bounds.width
 }
