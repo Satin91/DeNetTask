@@ -12,7 +12,6 @@ struct ExplorerView: View {
     @EnvironmentObject var navigator: Navigation
     @State var nodes = [NodeRealm]()
     @State var address = ""
-    @State var isAnimate = false
     
     var body: some View {
         content
@@ -72,6 +71,5 @@ struct ExplorerView: View {
             onTap: { index in navigator.openFolder(at: index) },
             onDelete: { index in navigator.removeFolder(at: index) }
         )
-        .animation(.easeIn(duration: 0.3), value: isAnimate)
     }
 }
