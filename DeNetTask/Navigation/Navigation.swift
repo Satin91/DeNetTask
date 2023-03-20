@@ -12,12 +12,17 @@ import RealmSwift
 typealias Path = [Int]
 
 class Navigation: ObservableObject {
-    // Properties
     var currentFolder = CurrentValueSubject<NodeRealm, Never>(NodeRealm())
-    private let storage = StorageManager()
+    private var storage = CurrentValueSubject<NodeRealm, Never>(NodeRealm())
     private var cancelBag = Set<AnyCancellable>()
     
-    private var path: Path = []
+    private let storageManager = StorageManager()
+    
+    private var path = Path() {
+        didSet {
+            storageManager.save(path)
+        }
+    }
     
     var isRootScreen: Bool {
         path.isEmpty
@@ -28,38 +33,51 @@ class Navigation: ObservableObject {
     }
     
     init() {
+        loadPath()
         subscribeToStorage()
     }
     
+    private func loadPath() {
+        path = storageManager.loadPath()
+    }
+    
     private func subscribeToStorage() {
-        storage.storagePublisher.sink { node in
-            self.currentFolder.send(node)
+        storageManager.storagePublisher.sink { node in
+            self.storage.send(node)
+            let currentFolder = self.findNodeBy(path: self.path)
+            self.currentFolder.send(currentFolder)
         }
         .store(in: &cancelBag)
     }
     
     func addFolder() {
-        storage.addNode(to: currentFolder.value)
-    }
-    
-    func removeFolder(at index: Int) {
-        storage.removeNode(from: currentFolder.value, at: index)
-    }
-    
-    func openFolder(at: Int) {
-        if currentFolder.value.children.indices.contains(at) {
-            currentFolder.send(currentFolder.value.children[at])
-            path.append(at)
-        } else {
-            // for debugging
-            fatalError("Node not found")
+        realmTransactor {
+            let newFolder = NodeRealm(parent: self.currentFolder.value, children: RealmSwift.List<NodeRealm>(), name: "")
+            let folderName = "\(abs(newFolder.hashValue))".prefix(5)
+            newFolder.name = String(folderName)
+            self.currentFolder.value.children.append(newFolder)
+        } completion: {
+            self.currentFolder.refresh()
         }
     }
     
+    func removeFolder(at index: Int) {
+        realmTransactor {
+            self.currentFolder.value.children.remove(at: index)
+        } completion: {
+            self.currentFolder.refresh()
+        }
+    }
+    
+    func openFolder(at index: Int) {
+        currentFolder.send(currentFolder.value.children[index])
+        path.append(index)
+    }
+    
     func back() {
-        path.removeLast()
         if let parent = currentFolder.value.parent {
             currentFolder.send(parent)
+            path.removeLast()
         }
     }
     
@@ -72,5 +90,26 @@ class Navigation: ObservableObject {
         }
         let joinedLine = address.reversed().joined(separator: "/")
         return joinedLine
+    }
+    
+    private func findNodeBy(path: Path) -> NodeRealm {
+        var temporary = storage.value
+        for index in path {
+            let node = temporary.children[index]
+            temporary = node
+        }
+        return temporary
+    }
+    
+    private func realmTransactor(handler: @escaping () -> Void, completion: () -> Void) {
+        do {
+            let realm = try Realm()
+            try realm.write {
+                handler()
+            }
+        } catch let error {
+            print("Error write transaction \(error.localizedDescription)")
+        }
+        completion()
     }
 }

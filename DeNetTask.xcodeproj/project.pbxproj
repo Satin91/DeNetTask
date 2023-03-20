@@ -16,6 +16,7 @@
 		8E286C0D29C1AD4D002A541A /* ExplorerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E286C0C29C1AD4D002A541A /* ExplorerView.swift */; };
 		8E286C0F29C1C63E002A541A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E286C0E29C1C63E002A541A /* Colors.swift */; };
 		8E540C5429C738ED00DCA7A8 /* NavBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E540C5329C738ED00DCA7A8 /* NavBarButton.swift */; };
+		8E78BCCB29C842BD00CF894F /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E78BCCA29C842BD00CF894F /* Combine.swift */; };
 		8E7F1AC929C30C26005F252C /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7F1AC829C30C26005F252C /* Sizes.swift */; };
 		8E7F1ACB29C37C43005F252C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E7F1ACA29C37C43005F252C /* Colors.xcassets */; };
 		8EC1199629C5E36100C70A91 /* NodeRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC1199529C5E36100C70A91 /* NodeRealm.swift */; };
@@ -36,6 +37,7 @@
 		8E286C0C29C1AD4D002A541A /* ExplorerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerView.swift; sourceTree = "<group>"; };
 		8E286C0E29C1C63E002A541A /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		8E540C5329C738ED00DCA7A8 /* NavBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarButton.swift; sourceTree = "<group>"; };
+		8E78BCCA29C842BD00CF894F /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.swift; sourceTree = "<group>"; };
 		8E7F1AC829C30C26005F252C /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
 		8E7F1ACA29C37C43005F252C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		8EC1199529C5E36100C70A91 /* NodeRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeRealm.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				8EC1199729C5E55000C70A91 /* Storage */,
 				8EC1199F29C62F0600C70A91 /* Navigation */,
 				8E10444E29C05A5000B288A6 /* Constants */,
+				8E78BCC929C842AB00CF894F /* Extensions */,
 				8E10445129C05BBF00B288A6 /* Views */,
 				8E10444D29C0573200B288A6 /* Models */,
 				8E540C5229C738C800DCA7A8 /* Components */,
@@ -139,6 +142,14 @@
 				8E540C5329C738ED00DCA7A8 /* NavBarButton.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		8E78BCC929C842AB00CF894F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8E78BCCA29C842BD00CF894F /* Combine.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		8EC1199729C5E55000C70A91 /* Storage */ = {
@@ -290,6 +301,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E10443F29C0560700B288A6 /* DeNetTaskApp.swift in Sources */,
+				8E78BCCB29C842BD00CF894F /* Combine.swift in Sources */,
 				8EC1199629C5E36100C70A91 /* NodeRealm.swift in Sources */,
 				8E7F1AC929C30C26005F252C /* Sizes.swift in Sources */,
 				8E286C0F29C1C63E002A541A /* Colors.swift in Sources */,

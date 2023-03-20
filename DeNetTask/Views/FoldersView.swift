@@ -11,12 +11,11 @@ struct FoldersView: View {
     var nodes: [NodeRealm]
     var onTap: (Int) -> Void
     var onDelete: (Int) -> Void
-    @State var isAnimate = false
     
     var columns: [GridItem] = [
-        GridItem(.fixed(Sizes.screenWidth / 3), spacing: 0),
-        GridItem(.fixed(Sizes.screenWidth / 3), spacing: 0),
-        GridItem(.fixed(Sizes.screenWidth / 3), spacing: 0)
+        GridItem(.flexible(), spacing: 40),
+        GridItem(.flexible(), spacing: 40),
+        GridItem(.flexible(), spacing: 40)
     ]
     
     var body: some View {
@@ -34,11 +33,10 @@ struct FoldersView: View {
                     NodeListView(text: Array(nodes)[index].name, onDelete: { onDelete(index) })
                         .onTapGesture {
                             onTap(index)
-                            isAnimate.toggle()
                         }
                 }
             }
-            .padding(.horizontal, 8)
+            .padding(.horizontal, 40)
         }
     }
 }
@@ -58,14 +56,13 @@ struct NodeListView: View {
                 Spacer(minLength: .zero)
                 deleteButton
             }
-            .padding(.horizontal, 24)
             folderImage
         }
     }
     
     private var title: some View {
         Text(text)
-            .font(.callout)
+            .font(.system(size: 14))
             .foregroundColor(.white.opacity(0.8))
     }
     
@@ -82,6 +79,5 @@ struct NodeListView: View {
         Image(Images.folder)
             .resizable()
             .scaledToFill()
-            .frame(width: 80, height: 80)
     }
 }
