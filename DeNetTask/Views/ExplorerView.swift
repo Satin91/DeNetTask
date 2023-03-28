@@ -10,7 +10,7 @@ import SwiftUI
 struct ExplorerView: View {
     private let appendButtonSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 60)
     @EnvironmentObject var navigator: Navigation
-    @State var nodes = [NodeRealm]()
+    @State var nodes = [Node]()
     @State var address = ""
     
     var body: some View {

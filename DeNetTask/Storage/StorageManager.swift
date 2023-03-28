@@ -11,8 +11,8 @@ import RealmSwift
 import SwiftUI
 
 final class StorageManager {
-    @ObservedResults(NodeRealm.self) var realmObjects
-    var storagePublisher = CurrentValueSubject<NodeRealm, Never>(NodeRealm())
+    @ObservedResults(Node.self) var realmObjects
+    var storagePublisher = CurrentValueSubject<Node, Never>(Node())
     private var cancelBag = Set<AnyCancellable>()
     
     private let userDefaults = UserDefaults()
@@ -32,8 +32,8 @@ final class StorageManager {
     
     private func createStorageIfNeed() {
         if realmObjects.isEmpty {
-            let rootFolder = NodeRealm(children: RealmSwift.List<NodeRealm>(), name: "Root")
-            let explorerFolder = NodeRealm(parent: rootFolder, children: RealmSwift.List<NodeRealm>(), name: "Explorer")
+            let rootFolder = Node(children: RealmSwift.List<Node>(), name: "Root")
+            let explorerFolder = Node(parent: rootFolder, children: RealmSwift.List<Node>(), name: "Explorer")
             rootFolder.children.append(explorerFolder)
             storagePublisher.send(rootFolder)
             $realmObjects.append(rootFolder)

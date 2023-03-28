@@ -12,8 +12,8 @@ import RealmSwift
 typealias Path = [Int]
 
 class Navigation: ObservableObject {
-    var currentFolder = CurrentValueSubject<NodeRealm, Never>(NodeRealm())
-    private var storage = CurrentValueSubject<NodeRealm, Never>(NodeRealm())
+    var currentFolder = CurrentValueSubject<Node, Never>(Node())
+    private var storage = CurrentValueSubject<Node, Never>(Node())
     private var cancelBag = Set<AnyCancellable>()
     
     private let storageManager = StorageManager()
@@ -52,7 +52,7 @@ class Navigation: ObservableObject {
     
     func addFolder() {
         realmTransactor {
-            let newFolder = NodeRealm(parent: self.currentFolder.value, children: RealmSwift.List<NodeRealm>(), name: "")
+            let newFolder = Node(parent: self.currentFolder.value, children: RealmSwift.List<Node>(), name: "")
             let folderName = "\(abs(newFolder.hashValue))".prefix(5)
             newFolder.name = String(folderName)
             self.currentFolder.value.children.append(newFolder)
@@ -82,7 +82,7 @@ class Navigation: ObservableObject {
     }
     
     private func getAddress() -> String {
-        var temporary: NodeRealm? = currentFolder.value
+        var temporary: Node? = currentFolder.value
         var address: [String] = []
         path.forEach { _ in
             address.append(temporary?.name ?? "Root")
@@ -92,7 +92,7 @@ class Navigation: ObservableObject {
         return joinedLine
     }
     
-    private func findNodeBy(path: Path) -> NodeRealm {
+    private func findNodeBy(path: Path) -> Node {
         var temporary = storage.value
         for index in path {
             let node = temporary.children[index]

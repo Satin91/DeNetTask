@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FoldersView: View {
-    var nodes: [NodeRealm]
+    var nodes: [Node]
     var onTap: (Int) -> Void
     var onDelete: (Int) -> Void
     

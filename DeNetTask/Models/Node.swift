@@ -2,17 +2,21 @@
 //  Node.swift
 //  DeNetTask
 //
-//  Created by Артур Кулик on 14.03.2023.
+//  Created by Артур Кулик on 18.03.2023.
 //
 
+import Combine
 import Foundation
+import RealmSwift
 
-class Node: Decodable {
-    var parent: Node?
-    var children: [Node]
-    var name: String?
-
-    init(parent: Node? = nil, name: String? = nil, children: [Node]) {
+final class Node: Object, ObjectKeyIdentifiable {
+    @Persisted(primaryKey: true) var _id: ObjectId
+    @Persisted var parent: Node?
+    @Persisted var children: RealmSwift.List<Node>
+    @Persisted var name: String
+    
+    convenience init(parent: Node? = nil, children: RealmSwift.List<Node>, name: String) {
+        self.init()
         self.parent = parent
         self.children = children
         self.name = name
